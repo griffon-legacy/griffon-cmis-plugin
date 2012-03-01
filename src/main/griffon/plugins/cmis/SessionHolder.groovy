@@ -30,7 +30,7 @@ import org.apache.chemistry.opencmis.client.api.Session
  * @author Andres Almiray
  */
 @Singleton
-class SessionHolder {
+class SessionHolder implements CmisProvider {
     private static final Logger LOG = LoggerFactory.getLogger(SessionHolder)
     private static final Object[] LOCK = new Object[0]
     private final Map<String, Session> sessions = [:]

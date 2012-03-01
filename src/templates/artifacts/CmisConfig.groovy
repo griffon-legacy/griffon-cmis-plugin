@@ -3,7 +3,7 @@ import org.apache.chemistry.opencmis.commons.enums.BindingType
 
 // default
 session = [
-    (SessionParameter.ATOMPUB_URL): 'http://opencmis.cloudapp.net/inmemory/atom/',
+    (SessionParameter.ATOMPUB_URL): 'http://repo.opencmis.org/inmemory/atom/',
     (SessionParameter.BINDING_TYPE): BindingType.ATOMPUB.value(),
     (SessionParameter.REPOSITORY_ID) : 'A1'
 ]
@@ -11,7 +11,7 @@ session = [
 sessions {
     /*
     someName = [
-        (SessionParameter.ATOMPUB_URL): 'http://opencmis.cloudapp.net/inmemory/atom/',
+        (SessionParameter.ATOMPUB_URL): 'http://repo.opencmis.org/inmemory/atom/',
         (SessionParameter.BINDING_TYPE): BindingType.ATOMPUB.value(),
         (SessionParameter.REPOSITORY_ID) : 'A1'
     ]

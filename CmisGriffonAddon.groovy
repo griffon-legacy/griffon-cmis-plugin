@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 the original author or authors.
+ * Copyright 2011-2012 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the 'License');
  * you may not use this file except in compliance with the License.
@@ -14,17 +14,26 @@
  * limitations under the License.
  */
 
+import griffon.core.GriffonClass
 import griffon.core.GriffonApplication
 import griffon.plugins.cmis.CmisConnector
+import griffon.plugins.cmis.CmisEnhancer
 
 /**
  * @author Andres Almiray
  */
 class CmisGriffonAddon {
     void addonInit(GriffonApplication app) {
-        if(app.config.cmis.autoconnect) {
-            ConfigObject config = CmisConnector.instance.createConfig(app)
-            CmisConnector.instance.connect(app, config)
+        ConfigObject config = CmisConnector.instance.createConfig(app)
+        CmisConnector.instance.connect(app, config)
+    }
+
+    void addonPostInit(GriffonApplication app) {
+        def types = app.config.griffon?.cmis?.injectInto ?: ['controller']
+        for(String type : types) {
+            for(GriffonClass gc : app.artifactManager.getClassesOfType(type)) {
+                CmisEnhancer.enhance(gc.metaClass)
+            }
         }
     }
 
@@ -32,12 +41,6 @@ class CmisGriffonAddon {
         ShutdownStart: { app ->
             ConfigObject config = CmisConnector.instance.createConfig(app)
             CmisConnector.instance.disconnect(app, config)
-        },
-        NewInstance: { klass, type, instance ->
-            def types = app.config.griffon?.cmis?.injectInto ?: ['controller']
-            if(!types.contains(type)) return
-            def mc = app.artifactManager.findGriffonClass(klass).metaClass
-            CmisConnector.enhance(mc)
         }
     ]
 }

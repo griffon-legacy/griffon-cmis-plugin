@@ -31,24 +31,9 @@ import org.slf4j.LoggerFactory
  * @author Andres Almiray
  */
 @Singleton
-final class CmisConnector {
+final class CmisConnector implements CmisProvider {
     final SessionFactory sessionFactory = SessionFactoryImpl.newInstance()
     private static final Logger LOG = LoggerFactory.getLogger(CmisConnector)
-
-    static void enhance(MetaClass mc) {
-        mc.withCmis = {Closure closure ->
-            SessionHolder.instance.withCmis('default', closure)
-        }
-        mc.withCmis << {String sessionName, Closure closure ->
-            SessionHolder.instance.withCmis(sessionName, closure)
-        }
-        mc.withCmis << {CallableWithArgs callable ->
-            SessionHolder.instance.withCmis('default', callable)
-        }
-        mc.withCmis << {String sessionName, CallableWithArgs callable ->
-            SessionHolder.instance.withCmis(sessionName, callable)
-        }
-    }
 
     Object withCmis(String sessionName = 'default', Closure closure) {
         return SessionHolder.instance.withCmis(sessionName, closure)
@@ -91,7 +76,6 @@ final class CmisConnector {
             SessionHolder.instance.disconnectSession(sessionName)
         }
     }
-
 
     Session createSession(ConfigObject config, String sessionName = 'default') {
         sessionFactory.createSession(config)
