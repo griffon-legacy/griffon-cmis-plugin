@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 the original author or authors.
+ * Copyright 2011-2012 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,7 +34,7 @@ class SessionHolder implements CmisProvider {
     private static final Logger LOG = LoggerFactory.getLogger(SessionHolder)
     private static final Object[] LOCK = new Object[0]
     private final Map<String, Session> sessions = [:]
-  
+
     String[] getSessionNames() {
         List<String> sessionNames = new ArrayList().addAll(sessions.keySet())
         sessionNames.toArray(new String[sessionNames.size()])
@@ -47,7 +47,7 @@ class SessionHolder implements CmisProvider {
 
     void setSession(String sessionName = 'default', Session session) {
         if(isBlank(sessionName)) sessionName = 'default'
-        storeSession(sessionName, session)       
+        storeSession(sessionName, session)
     }
 
     Object withCmis(String sessionName = 'default', Closure closure) {
@@ -70,7 +70,7 @@ class SessionHolder implements CmisProvider {
     
     void disconnectSession(String sessionName) {
         if(isBlank(sessionName)) sessionName = 'default'
-        storeSession(sessionName, null)        
+        storeSession(sessionName, null)
     }
 
     private Session fetchSession(String sessionName) {
@@ -81,7 +81,7 @@ class SessionHolder implements CmisProvider {
             ConfigObject config = CmisConnector.instance.createConfig(app)
             session = CmisConnector.instance.connect(app, config, sessionName)
         }
-        
+
         if(session == null) {
             throw new IllegalArgumentException("No such Session configuration for name $sessionName")
         }

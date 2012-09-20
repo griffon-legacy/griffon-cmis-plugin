@@ -8,7 +8,7 @@ griffon.project.dependency.resolution = {
         mavenRepo 'https://repository.jboss.org/nexus/content/groups/public-jboss'
     }
     dependencies {
-        def cmisVersion = '0.6.0'
+        def cmisVersion = '0.7.0'
         compile "org.apache.chemistry.opencmis:chemistry-opencmis-client-api:$cmisVersion",
                 "org.apache.chemistry.opencmis:chemistry-opencmis-client-impl:$cmisVersion"
     }

@@ -13,17 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package griffon.plugins.cmis
 
 import griffon.util.CallableWithArgs
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 /**
  * @author Andres Almiray
  */
 final class CmisEnhancer {
+    private static final Logger LOG = LoggerFactory.getLogger(CmisEnhancer)
+
     private CmisEnhancer() {}
-    
+
     static void enhance(MetaClass mc, CmisProvider provider = SessionHolder.instance) {
+        if(LOG.debugEnabled) LOG.debug("Enhancing $mc with $provider")
         mc.withCmis = {Closure closure ->
             provider.withCmis('default', closure)
         }

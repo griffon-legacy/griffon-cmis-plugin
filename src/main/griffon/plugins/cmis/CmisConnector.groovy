@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 the original author or authors.
+ * Copyright 2011-2012 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ import griffon.core.GriffonApplication
 import griffon.util.Environment
 import griffon.util.Metadata
 import griffon.util.CallableWithArgs
+import griffon.util.ConfigUtils
 
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -46,8 +47,7 @@ final class CmisConnector implements CmisProvider {
     // ======================================================
 
     ConfigObject createConfig(GriffonApplication app) {
-        def configClass = app.class.classLoader.loadClass('CmisConfig')
-        return new ConfigSlurper(Environment.current.name).parse(configClass)
+        ConfigUtils.loadConfigWithI18n('CmisConfig')
     }
 
     private ConfigObject narrowConfig(ConfigObject config, String sessionName) {

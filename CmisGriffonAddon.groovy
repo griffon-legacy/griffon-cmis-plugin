@@ -37,7 +37,7 @@ class CmisGriffonAddon {
         }
     }
 
-    def events = [
+    Map events = [
         ShutdownStart: { app ->
             ConfigObject config = CmisConnector.instance.createConfig(app)
             CmisConnector.instance.disconnect(app, config)

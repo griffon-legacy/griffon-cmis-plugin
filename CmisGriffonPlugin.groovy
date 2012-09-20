@@ -19,9 +19,9 @@
  */
  class CmisGriffonPlugin {
     // the plugin version
-    String version = '0.3'
+    String version = '0.4'
     // the version or versions of Griffon the plugin is designed for
-    String griffonVersion = '0.9.5 > *'
+    String griffonVersion = '1.1.0 > *'
     // the other plugins this plugin depends on
     Map dependsOn = [:]
     // resources that are included in plugin packaging
@@ -46,7 +46,7 @@
             email: 'aalmiray@yahoo.com'
         ]
     ]
-    String title = 'Open CMIS    support'
+    String title = 'Open CMIS support'
     String description = '''
 The CMIS plugin enables the usage of the [CMIS][1] specification via [Apache Chemistry][2].
 
@@ -61,19 +61,20 @@ giving you access to a `org.apache.chemistry.opencmis.client.api.Session` object
 to make calls to the repository. Remember to make all repositry calls off the EDT
 otherwise your application may appear unresponsive when doing long computations
 inside the EDT.
+
 This method is aware of multiple repositories. If no sessionName is specified when calling
 it then the default repository will be selected. Here are two example usages, the first
 queries against the default repository while the second queries a repository whose name has
 been configured as 'internal'
 
-	package sample
-	class SampleController {
-	    def queryAllRepositories = {
-	        withCmis { sessionName, session -> ... }
-	        withCmis('internal') { sessionName, session -> ... }
-	    }
-	}
-	
+    package sample
+    class SampleController {
+        def queryAllRepositories = {
+            withCmis { sessionName, session -> ... }
+            withCmis('internal') { sessionName, session -> ... }
+        }
+    }
+
 This method is also accessible to any component through the singleton `griffon.plugins.cmis.CmisConnector`.
 You can inject these methods to non-artifacts via metaclasses. Simply grab hold of a particular metaclass and call
 `CmisEnhancer.enhance(metaClassInstance, cmisProviderInstance)`.
@@ -103,13 +104,13 @@ implies this is the session used by default, however you can configure named ses
 by adding a new config block. For example connecting to a session whose name is 'internal'
 can be done in this way
 
-	sessions {
-	    internal {
+    sessions {
+        internal {
             (SessionParameter.ATOMPUB_URL)   : 'http://acme.com/atom/',
             (SessionParameter.BINDING_TYPE)  : BindingType.ATOMPUB.value(),
             (SessionParameter.REPOSITORY_ID) : 'ACME1'
-		}
-	}
+        }
+    }
 
 This block can be used inside the `environments()` block in the same way as the
 default session block is used.
@@ -150,9 +151,9 @@ fails regardless of the arguments it receives
 
     class MyCmisProvider implements CmisProvider {
         Object withCmis(String sessionName = 'default', Closure closure) { null }
-        public <T> T withCmis(String sessionName = 'default', CallableWithArgs<T> callable) { null }      
+        public <T> T withCmis(String sessionName = 'default', CallableWithArgs<T> callable) { null }
     }
-    
+
 This implementation may be used in the following way
 
     class MyServiceTests extends GriffonUnitTestCase {
