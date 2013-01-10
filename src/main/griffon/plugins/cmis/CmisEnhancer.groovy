@@ -1,5 +1,5 @@
 /*
- * Copyright 2012 the original author or authors.
+ * Copyright 2012-2013 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,20 +24,21 @@ import org.slf4j.LoggerFactory
  * @author Andres Almiray
  */
 final class CmisEnhancer {
+    private static final String DEFAULT = 'default'
     private static final Logger LOG = LoggerFactory.getLogger(CmisEnhancer)
 
     private CmisEnhancer() {}
-
-    static void enhance(MetaClass mc, CmisProvider provider = SessionHolder.instance) {
+    
+    static void enhance(MetaClass mc, CmisProvider provider = DefaultCmisProvider.instance) {
         if(LOG.debugEnabled) LOG.debug("Enhancing $mc with $provider")
         mc.withCmis = {Closure closure ->
-            provider.withCmis('default', closure)
+            provider.withCmis(DEFAULT, closure)
         }
         mc.withCmis << {String sessionName, Closure closure ->
             provider.withCmis(sessionName, closure)
         }
         mc.withCmis << {CallableWithArgs callable ->
-            provider.withCmis('default', callable)
+            provider.withCmis(DEFAULT, callable)
         }
         mc.withCmis << {String sessionName, CallableWithArgs callable ->
             provider.withCmis(sessionName, callable)

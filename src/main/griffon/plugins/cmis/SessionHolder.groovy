@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2012 the original author or authors.
+ * Copyright 2011-2013 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,6 @@ package griffon.plugins.cmis
 
 import griffon.core.GriffonApplication
 import griffon.util.ApplicationHolder
-import griffon.util.CallableWithArgs
 import static griffon.util.GriffonNameUtils.isBlank
 
 import org.slf4j.Logger
@@ -29,52 +28,49 @@ import org.apache.chemistry.opencmis.client.api.Session
 /**
  * @author Andres Almiray
  */
-@Singleton
-class SessionHolder implements CmisProvider {
+class SessionHolder {
+    private static final String DEFAULT = 'default'
     private static final Logger LOG = LoggerFactory.getLogger(SessionHolder)
     private static final Object[] LOCK = new Object[0]
     private final Map<String, Session> sessions = [:]
+
+    private static final SessionHolder INSTANCE
+
+    static {
+        INSTANCE = new SessionHolder()
+    }
+
+    static SessionHolder getInstance() {
+        INSTANCE
+    }
 
     String[] getSessionNames() {
         List<String> sessionNames = new ArrayList().addAll(sessions.keySet())
         sessionNames.toArray(new String[sessionNames.size()])
     }
 
-    Session getSession(String sessionName = 'default') {
-        if(isBlank(sessionName)) sessionName = 'default'
+    Session getSession(String sessionName = DEFAULT) {
+        if(isBlank(sessionName)) sessionName = DEFAULT
         retrieveSession(sessionName)
     }
 
-    void setSession(String sessionName = 'default', Session session) {
-        if(isBlank(sessionName)) sessionName = 'default'
+    void setSession(String sessionName = DEFAULT, Session session) {
+        if(isBlank(sessionName)) sessionName = DEFAULT
         storeSession(sessionName, session)
     }
 
-    Object withCmis(String sessionName = 'default', Closure closure) {
-        Session session = fetchSession(sessionName)
-        if(LOG.debugEnabled) LOG.debug("Executing statement on session '$sessionName'")
-        return closure(sessionName, session)
-    }
-
-    public <T> T withCmis(String sessionName = 'default', CallableWithArgs<T> callable) {
-        Session session = fetchSession(sessionName)
-        if(LOG.debugEnabled) LOG.debug("Executing statement on session '$sessionName'")
-        callable.args = [sessionName, session] as Object[]
-        return callable.call()
-    }
-    
     boolean isSessionConnected(String sessionName) {
-        if(isBlank(sessionName)) sessionName = 'default'
+        if(isBlank(sessionName)) sessionName = DEFAULT
         retrieveSession(sessionName) != null
     }
-    
+
     void disconnectSession(String sessionName) {
-        if(isBlank(sessionName)) sessionName = 'default'
+        if(isBlank(sessionName)) sessionName = DEFAULT
         storeSession(sessionName, null)
     }
 
     private Session fetchSession(String sessionName) {
-        if(isBlank(sessionName)) sessionName = 'default'
+        if(isBlank(sessionName)) sessionName = DEFAULT
         Session session = retrieveSession(sessionName)
         if(session == null) {
             GriffonApplication app = ApplicationHolder.application

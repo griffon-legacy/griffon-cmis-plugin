@@ -22,7 +22,11 @@ import groovy.lang.Closure;
 /**
  * @author Andres Almiray
  */
-public interface CmisProvider {
+public interface CmisContributionHandler {
+    void setCmisProvider(CmisProvider provider);
+
+    CmisProvider getCmisProvider();
+
     <R> R withCmis(Closure<R> closure);
 
     <R> R withCmis(String sessionName, Closure<R> closure);

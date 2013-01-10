@@ -14,20 +14,12 @@
  * limitations under the License.
  */
 
-package griffon.plugins.cmis;
-
-import griffon.util.CallableWithArgs;
-import groovy.lang.Closure;
+package gdsl
 
 /**
  * @author Andres Almiray
  */
-public interface CmisProvider {
-    <R> R withCmis(Closure<R> closure);
 
-    <R> R withCmis(String sessionName, Closure<R> closure);
-
-    <R> R withCmis(CallableWithArgs<R> callable);
-
-    <R> R withCmis(String sessionName, CallableWithArgs<R> callable);
+contributor(scope: annotatedScope(ctype: 'griffon.plugins.cmis.CmisAware')) {
+    delegatesTo(findClass('griffon.plugins.cmis.CmisContributionHandler'))
 }

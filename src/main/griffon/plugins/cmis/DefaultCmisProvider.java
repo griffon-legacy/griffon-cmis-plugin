@@ -16,18 +16,24 @@
 
 package griffon.plugins.cmis;
 
-import griffon.util.CallableWithArgs;
-import groovy.lang.Closure;
+import org.apache.chemistry.opencmis.client.api.Session;
 
 /**
  * @author Andres Almiray
  */
-public interface CmisProvider {
-    <R> R withCmis(Closure<R> closure);
+public class DefaultCmisProvider extends AbstractCmisProvider {
+    private static final DefaultCmisProvider INSTANCE;
 
-    <R> R withCmis(String sessionName, Closure<R> closure);
+    static {
+        INSTANCE = new DefaultCmisProvider();
+    }
 
-    <R> R withCmis(CallableWithArgs<R> callable);
+    public static DefaultCmisProvider getInstance() {
+        return INSTANCE;
+    }
 
-    <R> R withCmis(String sessionName, CallableWithArgs<R> callable);
+    @Override
+    protected Session getSession(String sessionName) {
+        return SessionHolder.getInstance().getSession(sessionName);
+    }
 }

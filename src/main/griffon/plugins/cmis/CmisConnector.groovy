@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-2012 the original author or authors.
+ * Copyright 2011-2013 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,29 +32,20 @@ import org.slf4j.LoggerFactory
  * @author Andres Almiray
  */
 @Singleton
-final class CmisConnector implements CmisProvider {
-    final SessionFactory sessionFactory = SessionFactoryImpl.newInstance()
+final class CmisConnector {
+    private static final String DEFAULT = 'default'
     private static final Logger LOG = LoggerFactory.getLogger(CmisConnector)
-
-    Object withCmis(String sessionName = 'default', Closure closure) {
-        return SessionHolder.instance.withCmis(sessionName, closure)
-    }
-
-    public <T> T withCmis(String sessionName = 'default', CallableWithArgs<T> callable) {
-        return SessionHolder.instance.withCmis(sessionName, callable)
-    }
-
-    // ======================================================
+    private final SessionFactory sessionFactory = SessionFactoryImpl.newInstance()
 
     ConfigObject createConfig(GriffonApplication app) {
         ConfigUtils.loadConfigWithI18n('CmisConfig')
     }
 
     private ConfigObject narrowConfig(ConfigObject config, String sessionName) {
-        return sessionName == 'default' ? config.session : config.sessions[sessionName]
+        return sessionName == DEFAULT ? config.session : config.sessions[sessionName]
     }
 
-    Session connect(GriffonApplication app, ConfigObject config, String sessionName = 'default') {
+    Session connect(GriffonApplication app, ConfigObject config, String sessionName = DEFAULT) {
         if (SessionHolder.instance.isSessionConnected(sessionName)) {
             return SessionHolder.instance.getSession(sessionName)
         }
@@ -67,7 +58,7 @@ final class CmisConnector implements CmisProvider {
         s
     }
 
-    void disconnect(GriffonApplication app, ConfigObject config, String sessionName = 'default') {
+    void disconnect(GriffonApplication app, ConfigObject config, String sessionName = DEFAULT) {
         if (SessionHolder.instance.isSessionConnected(sessionName)) {
             config = narrowConfig(config, sessionName)
             Session s = SessionHolder.instance.getSession(sessionName)
@@ -77,7 +68,7 @@ final class CmisConnector implements CmisProvider {
         }
     }
 
-    Session createSession(ConfigObject config, String sessionName = 'default') {
+    Session createSession(ConfigObject config, String sessionName = DEFAULT) {
         sessionFactory.createSession(config)
     }
 }
