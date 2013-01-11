@@ -69,7 +69,7 @@ class SessionHolder {
         storeSession(sessionName, null)
     }
 
-    private Session fetchSession(String sessionName) {
+    Session fetchSession(String sessionName) {
         if(isBlank(sessionName)) sessionName = DEFAULT
         Session session = retrieveSession(sessionName)
         if(session == null) {

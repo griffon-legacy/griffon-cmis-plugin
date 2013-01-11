@@ -34,6 +34,6 @@ public class DefaultCmisProvider extends AbstractCmisProvider {
 
     @Override
     protected Session getSession(String sessionName) {
-        return SessionHolder.getInstance().getSession(sessionName);
+        return SessionHolder.getInstance().fetchSession(sessionName);
     }
 }
