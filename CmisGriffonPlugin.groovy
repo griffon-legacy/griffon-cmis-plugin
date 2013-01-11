@@ -81,7 +81,7 @@ The following list enumerates all the variants of the injected method
  * `<R> R withCmis(Closure<R> stmts)`
  * `<R> R withCmis(CallableWithArgs<R> stmts)`
  * `<R> R withCmis(String sesionName, Closure<R> stmts)`
- * `<R> R withCmis(String SessionNameCallableWithArgs<R> stmts)`
+ * `<R> R withCmis(String sessionName, CallableWithArgs<R> stmts)`
 
 These methods are also accessible to any component through the singleton
 `griffon.plugins.cmis.CmisEnhancer`. You can inject these methods to
