@@ -24,6 +24,8 @@ import org.slf4j.LoggerFactory;
 
 import org.apache.chemistry.opencmis.client.api.Session;
 
+import static griffon.util.GriffonNameUtils.isBlank;
+
 /**
  * @author Andres Almiray
  */
@@ -36,6 +38,7 @@ public abstract class AbstractCmisProvider implements CmisProvider {
     }
 
     public <R> R withCmis(String sessionName, Closure<R> closure) {
+        if (isBlank(sessionName)) sessionName = DEFAULT;
         if (closure != null) {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Executing statement on session '"+ sessionName + "'");
@@ -50,6 +53,7 @@ public abstract class AbstractCmisProvider implements CmisProvider {
     }
 
     public <R> R withCmis(String sessionName, CallableWithArgs<R> callable) {
+        if (isBlank(sessionName)) sessionName = DEFAULT;
         if (callable != null) {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Executing statement on session '"+ sessionName + "'");
