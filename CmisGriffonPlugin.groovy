@@ -80,7 +80,7 @@ The following list enumerates all the variants of the injected method
 
  * `<R> R withCmis(Closure<R> stmts)`
  * `<R> R withCmis(CallableWithArgs<R> stmts)`
- * `<R> R withCmis(String sesionName, Closure<R> stmts)`
+ * `<R> R withCmis(String sessionName, Closure<R> stmts)`
  * `<R> R withCmis(String sessionName, CallableWithArgs<R> stmts)`
 
 These methods are also accessible to any component through the singleton
@@ -105,7 +105,7 @@ change this setting by adding a configuration flag in `griffon-app/conf/Config.g
 
     griffon.cmis.injectInto = ['controller', 'service']
 
-Dynamic method injection wil skipped for classes implementing
+Dynamic method injection will be skipped for classes implementing
 `griffon.plugins.cmis.CmisContributionHandler`.
 
 ### Events
@@ -263,7 +263,7 @@ inside the `griffon-cmis-compile-x.y.z.jar`, with locations
 ### Lombok Support
 
 Rewriting Java AST in a similar fashion to Groovy AST transformations is
-posisble thanks to the [lombok][5] plugin.
+possible thanks to the [lombok][5] plugin.
 
 #### JavaC
 
