@@ -38,11 +38,19 @@ final class CmisConnector {
     private final SessionFactory sessionFactory = SessionFactoryImpl.newInstance()
 
     ConfigObject createConfig(GriffonApplication app) {
-        ConfigUtils.loadConfigWithI18n('CmisConfig')
+        if (!app.config.pluginConfig.cmis) {
+            app.config.pluginConfig.cmis = ConfigUtils.loadConfigWithI18n('CmisConfig')
+        }
+        app.config.pluginConfig.cmis
     }
 
     private ConfigObject narrowConfig(ConfigObject config, String sessionName) {
-        return sessionName == DEFAULT ? config.session : config.sessions[sessionName]
+        if (config.containsKey('session') && sessionName == DEFAULT) {
+            return config.session
+        } else if (config.containsKey('sessions')) {
+            return config.sessions[sessionName]
+        }
+        return config
     }
 
     Session connect(GriffonApplication app, ConfigObject config, String sessionName = DEFAULT) {

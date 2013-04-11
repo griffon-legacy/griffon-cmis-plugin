@@ -50,35 +50,35 @@ class SessionHolder {
     }
 
     Session getSession(String sessionName = DEFAULT) {
-        if(isBlank(sessionName)) sessionName = DEFAULT
+        if (isBlank(sessionName)) sessionName = DEFAULT
         retrieveSession(sessionName)
     }
 
     void setSession(String sessionName = DEFAULT, Session session) {
-        if(isBlank(sessionName)) sessionName = DEFAULT
+        if (isBlank(sessionName)) sessionName = DEFAULT
         storeSession(sessionName, session)
     }
 
     boolean isSessionConnected(String sessionName) {
-        if(isBlank(sessionName)) sessionName = DEFAULT
+        if (isBlank(sessionName)) sessionName = DEFAULT
         retrieveSession(sessionName) != null
     }
 
     void disconnectSession(String sessionName) {
-        if(isBlank(sessionName)) sessionName = DEFAULT
+        if (isBlank(sessionName)) sessionName = DEFAULT
         storeSession(sessionName, null)
     }
 
     Session fetchSession(String sessionName) {
-        if(isBlank(sessionName)) sessionName = DEFAULT
+        if (isBlank(sessionName)) sessionName = DEFAULT
         Session session = retrieveSession(sessionName)
-        if(session == null) {
+        if (session == null) {
             GriffonApplication app = ApplicationHolder.application
             ConfigObject config = CmisConnector.instance.createConfig(app)
             session = CmisConnector.instance.connect(app, config, sessionName)
         }
 
-        if(session == null) {
+        if (session == null) {
             throw new IllegalArgumentException("No such Session configuration for name $sessionName")
         }
         session

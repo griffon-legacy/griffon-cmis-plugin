@@ -23,7 +23,7 @@ includeTargets << griffonScript("_GriffonCreateArtifacts")
 argsMap = argsMap ?: [:]
 argsMap.skipPackagePrompt = true
 
-if(!new File("${basedir}/griffon-app/conf/CmisConfig.groovy").exists()) {
+if (!new File("${basedir}/griffon-app/conf/CmisConfig.groovy").exists()) {
    createArtifact(
       name: "CmisConfig",
       suffix: "",

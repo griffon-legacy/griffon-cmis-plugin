@@ -30,7 +30,7 @@ final class CmisEnhancer {
     private CmisEnhancer() {}
     
     static void enhance(MetaClass mc, CmisProvider provider = DefaultCmisProvider.instance) {
-        if(LOG.debugEnabled) LOG.debug("Enhancing $mc with $provider")
+        if (LOG.debugEnabled) LOG.debug("Enhancing $mc with $provider")
         mc.withCmis = {Closure closure ->
             provider.withCmis(DEFAULT, closure)
         }

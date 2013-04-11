@@ -20,16 +20,17 @@ import griffon.plugins.cmis.CmisConnector
 import griffon.plugins.cmis.CmisEnhancer
 import griffon.plugins.cmis.CmisContributionHandler
 
+import static griffon.util.ConfigUtils.getConfigValueAsBoolean
+
 /**
  * @author Andres Almiray
  */
 class CmisGriffonAddon {
-    void addonInit(GriffonApplication app) {
-        ConfigObject config = CmisConnector.instance.createConfig(app)
-        CmisConnector.instance.connect(app, config)
-    }
-
     void addonPostInit(GriffonApplication app) {
+        ConfigObject config = CmisConnector.instance.createConfig(app)
+        if (getConfigValueAsBoolean(app.config, 'griffon.cmis.connect.onstartup', true)) {
+            CmisConnector.instance.connect(app, config)
+        }
         def types = app.config.griffon?.cmis?.injectInto ?: ['controller']
         for(String type : types) {
             for(GriffonClass gc : app.artifactManager.getClassesOfType(type)) {
