@@ -27,13 +27,10 @@ import static griffon.util.ConfigUtils.getConfigValueAsBoolean
  */
 class CmisGriffonAddon {
     void addonPostInit(GriffonApplication app) {
-        ConfigObject config = CmisConnector.instance.createConfig(app)
-        if (getConfigValueAsBoolean(app.config, 'griffon.cmis.connect.onstartup', true)) {
-            CmisConnector.instance.connect(app, config)
-        }
+        CmisConnector.instance.createConfig(app)
         def types = app.config.griffon?.cmis?.injectInto ?: ['controller']
-        for(String type : types) {
-            for(GriffonClass gc : app.artifactManager.getClassesOfType(type)) {
+        for (String type : types) {
+            for (GriffonClass gc : app.artifactManager.getClassesOfType(type)) {
                 if (CmisContributionHandler.isAssignableFrom(gc.clazz)) continue
                 CmisEnhancer.enhance(gc.metaClass)
             }
@@ -41,6 +38,12 @@ class CmisGriffonAddon {
     }
 
     Map events = [
+        LoadAddonsEnd: { app, addons ->
+            if (getConfigValueAsBoolean(app.config, 'griffon.cmis.connect.onstartup', true)) {
+                ConfigObject config = CmisConnector.instance.createConfig(app)
+                CmisConnector.instance.connect(app, config)
+            }
+        },
         ShutdownStart: { app ->
             ConfigObject config = CmisConnector.instance.createConfig(app)
             CmisConnector.instance.disconnect(app, config)

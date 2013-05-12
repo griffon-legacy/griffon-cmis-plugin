@@ -44,6 +44,8 @@ class SessionHolder {
         INSTANCE
     }
 
+    private SessionHolder() {}
+
     String[] getSessionNames() {
         List<String> sessionNames = new ArrayList().addAll(sessions.keySet())
         sessionNames.toArray(new String[sessionNames.size()])
